@@ -24,9 +24,9 @@ class Window(QtWidgets.QMainWindow):
 		# give the page a lightgray background
 		self.page.setStyleSheet("QWidget {background-color: lightgray}")
 		# create widgets
-		# A) gb
+		# A) gb: groupbox
 		self.gb = QtWidgets.QGroupBox("Type of alert")
-		self.gb.setFixedSize(500, 100)
+		self.gb.setFixedSize(500, 120)
 		self.gb.setStyleSheet("""QGroupBox {
 								 border: 1px solid red; 
 								 border-radius: 5px;
@@ -38,7 +38,11 @@ class Window(QtWidgets.QMainWindow):
 				                 subcontrol-origin: margin;
 				                 subcontrol-position: top left;
 				                 padding: 0 10px 0 10px }""")
-		
+		# B) gb_layout: layout for the group box
+		self.gb_layout = QtWidgets.QHBoxLayout()
+		self.gb.setLayout(self.gb_layout)
+
+
 		# add widgets to layout
 		self.layout.addWidget(self.gb)
 
