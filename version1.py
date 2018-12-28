@@ -7,14 +7,14 @@ import webbrowser # open() opens a link in the default webbrowser
 total_breaks = 3 # it is preffered to write descriptive variable names
 break_count = 0
 # print start time
-print "program started on " + time.ctime()
+print("program started on " + time.ctime())
 
 while break_count < total_breaks:
     time.sleep(5) # 2*60*60 is the number of seconds in two hours
     # print time of openning the link
-    print "link opened for time " + str(break_count+1) + " in " + time.ctime()
+    print("link opened for time " + str(break_count+1) + " in " + time.ctime())
     # open the link to the song in the webbrowser
     webbrowser.open("https://www.youtube.com/watch?v=Eox2qAjrf0U", 1)
     break_count += 1
 # print program end time
-print "program ended on " + time.ctime()
+print("program ended on " + time.ctime())
