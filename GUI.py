@@ -53,7 +53,7 @@ class Window(QtWidgets.QMainWindow):
 		self.alert_choice.addItem("External Link (Youtube)")
 		self.alert_choice.activated[str].connect(self.alert_choice_activated)
 		self.alert_choice.setFixedSize(140, 30)
-		self.alert_choice.setStyleSheet("QComboBox { background-color: green }")
+		self.alert_choice.setStyleSheet("QComboBox { background-color: blue }")
 		# add C, D to B
 		self.gb_layout.addWidget(self.entry1, False, QtCore.Qt.AlignLeft) # (widget, stretch, alignment)
 		self.gb_layout.addWidget(self.alert_choice, False, QtCore.Qt.AlignLeft)
@@ -89,9 +89,15 @@ class Window(QtWidgets.QMainWindow):
 		# add G, H to F
 		self.gb2_layout.addWidget(self.entry2, False, QtCore.Qt.AlignLeft) # (widget, stretch, alignment)
 		self.gb2_layout.addWidget(self.time_choice, False, QtCore.Qt.AlignLeft)
+		# I) start_btn
+		self.start_btn = QtWidgets.QPushButton("Start Timer")
+		self.start_btn.setFixedSize(140, 30)
+		self.start_btn.setStyleSheet("QPushButton { background-color: Red }")
+		self.start_btn.clicked.connect(self.start_timer)
 		# add widgets to layout
 		self.layout.addWidget(self.gb)
 		self.layout.addWidget(self.gb2)
+		self.layout.addWidget(self.start_btn, False, QtCore.Qt.AlignCenter)
 
 		#_______________________________________METHODS______________________________________
 
@@ -105,6 +111,9 @@ class Window(QtWidgets.QMainWindow):
 
 	def time_choice_activated(self, text):
 		self.time_unit = text
+
+	def start_timer(self):
+		pass
 
 
 def main():
