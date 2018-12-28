@@ -23,7 +23,24 @@ class Window(QtWidgets.QMainWindow):
 		self.setCentralWidget(self.page)
 		# give the page a lightgray background
 		self.page.setStyleSheet("QWidget {background-color: lightgray}")
+		# create widgets
+		# A) gb
+		self.gb = QtWidgets.QGroupBox("Type of alert")
+		self.gb.setFixedSize(500, 100)
+		self.gb.setStyleSheet("""QGroupBox {
+								 border: 1px solid red; 
+								 border-radius: 5px;
+								 margin: 30px;
+								 font-size: 20px;
+								 color: red }
 
+						         QGroupBox:title {
+				                 subcontrol-origin: margin;
+				                 subcontrol-position: top left;
+				                 padding: 0 10px 0 10px }""")
+		
+		# add widgets to layout
+		self.layout.addWidget(self.gb)
 
 
 
