@@ -1,6 +1,5 @@
-import sys
+import sys, time, webbrowser, os, subprocess
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
-
 
 class Window(QtWidgets.QMainWindow):
 
@@ -105,15 +104,39 @@ class Window(QtWidgets.QMainWindow):
 		if text == "Local File (Song\\Video)":
 			path, var2 = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a File")
 			self.entry1.setText(path)
-		elif text == "External Link (Youtube)":
+			self.link_type = "Local"
+		if text == "External Link (Youtube)":
 			self.entry1.clear()
 			self.entry1.setPlaceholderText("PUT THE LINK HERE")
+			self.link_type = "External"
 
 	def time_choice_activated(self, text):
 		self.time_unit = text
 
 	def start_timer(self):
-		pass
+		# get the link entry
+		self.link_entry = self.entry1.text()
+		# get time entry and convert it to seconds if needed
+		self.time_entry = int(self.entry2.text())
+		if self.time_unit == "Hours":
+			self.time_in_seconds = self.time_entry * 60 * 60
+		elif self.time_unit == "Minutes":
+			self.time_in_seconds = self.time_entry * 60
+		elif self.time_unit == "Seconds":
+			self.time_in_seconds = self.time_entry
+
+		while True:
+			time.sleep(self.time_in_seconds)
+			if self.link_type == "Local":
+				# https://stackoverflow.com/questions/434597/open-document-with-default-application-in-python
+				if sys.platform.startswith('darwin'):
+					subprocess.call(('open', self.link_entry))
+				elif os.name == 'nt': # For Windows
+					os.startfile(self.link_entry)
+				elif os.name == 'posix': # For Linux, Mac, etc.
+					subprocess.call(('xdg-open', self.link_entry))
+			elif self.link_type == "External":
+				webbrowser.open(self.link_entry, 2)
 
 
 def main():
