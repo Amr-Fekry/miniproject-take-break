@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 
 
 class Window(QtWidgets.QMainWindow):
@@ -12,6 +12,8 @@ class Window(QtWidgets.QMainWindow):
 		self.setWindowIcon(QtGui.QIcon("logo.png"))
 
 		self.initUI()
+
+	#_______________________________________VIEW______________________________________
 
 	def initUI(self):
 		# create a widget for the page and give it a layout
@@ -26,7 +28,7 @@ class Window(QtWidgets.QMainWindow):
 		# create widgets
 		# A) gb: groupbox
 		self.gb = QtWidgets.QGroupBox("Type of alert")
-		self.gb.setFixedSize(500, 120)
+		self.gb.setMinimumSize(500, 120)
 		self.gb.setStyleSheet("""QGroupBox {
 								 border: 1px solid red; 
 								 border-radius: 5px;
@@ -45,17 +47,29 @@ class Window(QtWidgets.QMainWindow):
 		self.entry1 = QtWidgets.QLineEdit()
 		self.entry1.setMinimumSize(300, 30) 
 		self.entry1.setStyleSheet("QLineEdit {background-color: white}")
-		# add C to B
+		# D) alert_choice
+		self.alert_choice = QtWidgets.QComboBox(self)
+		self.alert_choice.addItem("Local File (Song\\Video)")
+		self.alert_choice.addItem("External Link (Youtube)")
+		self.alert_choice.activated[str].connect(self.alert_choice_activated)
+		self.alert_choice.setMinimumSize(100, 30)
+		self.alert_choice.setStyleSheet("QComboBox { background-color: green }")
+		# add C, D to B
 		self.gb_layout.addWidget(self.entry1, 0, QtCore.Qt.AlignLeft)
-
-
+		self.gb_layout.addWidget(self.alert_choice, 1, QtCore.Qt.AlignLeft)
 		# add widgets to layout
 		self.layout.addWidget(self.gb)
+
+		#_______________________________________METHODS______________________________________
+
+	def alert_choice_activated(self, text):
+		pass
 
 
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
+	app.setStyle(QtWidgets.QStyleFactory.create("Fusion"))
 	window = Window()
 	window.show()
 	sys.exit(app.exec_())
