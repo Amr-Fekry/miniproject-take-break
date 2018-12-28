@@ -41,6 +41,12 @@ class Window(QtWidgets.QMainWindow):
 		# B) gb_layout: layout for the group box
 		self.gb_layout = QtWidgets.QHBoxLayout()
 		self.gb.setLayout(self.gb_layout)
+		# C) entry1
+		self.entry1 = QtWidgets.QLineEdit()
+		self.entry1.setMinimumSize(300, 30) 
+		self.entry1.setStyleSheet("QLineEdit {background-color: white}")
+		# add C to B
+		self.gb_layout.addWidget(self.entry1, 0, QtCore.Qt.AlignLeft)
 
 
 		# add widgets to layout
