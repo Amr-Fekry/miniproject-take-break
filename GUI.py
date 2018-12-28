@@ -28,7 +28,7 @@ class Window(QtWidgets.QMainWindow):
 		# create widgets
 		# A) gb: groupbox
 		self.gb = QtWidgets.QGroupBox("Type of alert")
-		self.gb.setMinimumSize(500, 120)
+		self.gb.setFixedSize(530, 120)
 		self.gb.setStyleSheet("""QGroupBox {
 								 border: 1px solid red; 
 								 border-radius: 5px;
@@ -55,15 +55,20 @@ class Window(QtWidgets.QMainWindow):
 		self.alert_choice.setMinimumSize(100, 30)
 		self.alert_choice.setStyleSheet("QComboBox { background-color: green }")
 		# add C, D to B
-		self.gb_layout.addWidget(self.entry1, 0, QtCore.Qt.AlignLeft)
-		self.gb_layout.addWidget(self.alert_choice, 1, QtCore.Qt.AlignLeft)
+		self.gb_layout.addWidget(self.entry1, False, QtCore.Qt.AlignLeft) # (widget, stretch, alignment)
+		self.gb_layout.addWidget(self.alert_choice, False, QtCore.Qt.AlignLeft)
 		# add widgets to layout
 		self.layout.addWidget(self.gb)
 
 		#_______________________________________METHODS______________________________________
 
 	def alert_choice_activated(self, text):
-		pass
+		if text == "Local File (Song\\Video)":
+			path, var2 = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a File")
+			self.entry1.setText(path)
+		if text == "External Link (Youtube)":
+			self.entry1.clear()
+			self.entry1.setPlaceholderText("PUT THE LINK HERE")
 
 
 
