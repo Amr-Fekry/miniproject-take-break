@@ -127,27 +127,37 @@ class Window(QtWidgets.QMainWindow):
 		self.stop_btn.show()
 		# get the link entry
 		self.link_entry = self.entry1.text()
-		# get time entry and convert it to seconds if needed
+		# get the time entry
 		self.time_entry = int(self.entry2.text())
-		if self.time_unit == "Hours":
-			self.time_in_seconds = self.time_entry * 60 * 60
-		elif self.time_unit == "Minutes":
-			self.time_in_seconds = self.time_entry * 60
-		elif self.time_unit == "Seconds":
-			self.time_in_seconds = self.time_entry
+		# convert time entry to seconds if needed
+		self.time_in_seconds = self.convert_to_seconds(self.time_entry)
 
 		while True:
 			time.sleep(self.time_in_seconds)
 			if self.link_type == "Local":
-				# https://stackoverflow.com/questions/434597/open-document-with-default-application-in-python
-				if sys.platform.startswith('darwin'):
-					subprocess.call(('open', self.link_entry))
-				elif os.name == 'nt': # For Windows
-					os.startfile(self.link_entry)
-				elif os.name == 'posix': # For Linux, Mac, etc.
-					subprocess.call(('xdg-open', self.link_entry))
+				# open local link in corresponding operating system type
+				self.all_os_open(self.link_entry)
 			elif self.link_type == "External":
 				webbrowser.open(self.link_entry, 2)
+
+	# helper for start_timer()
+	def convert_to_seconds(self, time):
+		if self.time_unit == "Hours":
+			return time * 60 * 60
+		elif self.time_unit == "Minutes":
+			return time * 60
+		elif self.time_unit == "Seconds":
+			return time
+
+	# helper for start_timer()
+	def all_os_open(self, link):
+		# https://stackoverflow.com/questions/434597/open-document-with-default-application-in-python
+		if sys.platform.startswith('darwin'):
+			subprocess.call(('open', link))
+		elif os.name == 'nt': # For Windows
+			os.startfile(link)
+		elif os.name == 'posix': # For Linux, Mac, etc.
+			subprocess.call(('xdg-open', link))
 
 	def stop_timer(self):
 		pass
