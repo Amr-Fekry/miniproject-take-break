@@ -91,12 +91,20 @@ class Window(QtWidgets.QMainWindow):
 		# I) start_btn
 		self.start_btn = QtWidgets.QPushButton("Start Timer")
 		self.start_btn.setFixedSize(140, 30)
-		self.start_btn.setStyleSheet("QPushButton { background-color: Red }")
+		self.start_btn.setStyleSheet("QPushButton { background-color: Green }")
 		self.start_btn.clicked.connect(self.start_timer)
+		# J) stop_btn
+		self.stop_btn = QtWidgets.QPushButton("Stop Timer")
+		self.stop_btn.setFixedSize(140, 30)
+		self.stop_btn.setStyleSheet("QPushButton { background-color: Red }")
+		self.stop_btn.clicked.connect(self.stop_timer)
 		# add widgets to layout
 		self.layout.addWidget(self.gb)
 		self.layout.addWidget(self.gb2)
 		self.layout.addWidget(self.start_btn, False, QtCore.Qt.AlignCenter)
+		self.layout.addWidget(self.stop_btn, False, QtCore.Qt.AlignCenter)
+		# hide stop_btn
+		self.stop_btn.hide()
 
 		#_______________________________________METHODS______________________________________
 
@@ -114,6 +122,9 @@ class Window(QtWidgets.QMainWindow):
 		self.time_unit = text
 
 	def start_timer(self):
+		# hide start_btn and show stop_btn
+		self.start_btn.hide()
+		self.stop_btn.show()
 		# get the link entry
 		self.link_entry = self.entry1.text()
 		# get time entry and convert it to seconds if needed
@@ -138,6 +149,8 @@ class Window(QtWidgets.QMainWindow):
 			elif self.link_type == "External":
 				webbrowser.open(self.link_entry, 2)
 
+	def stop_timer(self):
+		pass
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
