@@ -1,5 +1,6 @@
 import sys, time, webbrowser, os, subprocess
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+import threading
 
 class Window(QtWidgets.QMainWindow):
 
@@ -12,7 +13,7 @@ class Window(QtWidgets.QMainWindow):
 
 		self.initUI()
 
-	#_______________________________________VIEW______________________________________
+	#_______________________________________VIEWS______________________________________
 
 	def initUI(self):
 		# create a widget for the page and give it a layout
@@ -106,7 +107,7 @@ class Window(QtWidgets.QMainWindow):
 		# hide stop_btn
 		self.stop_btn.hide()
 
-		#_______________________________________METHODS______________________________________
+	#_______________________________________METHODS______________________________________
 
 	def alert_choice_activated(self, text):
 		if text == "Local File (Song\\Video)":
@@ -132,13 +133,18 @@ class Window(QtWidgets.QMainWindow):
 		# convert time entry to seconds if needed
 		self.time_in_seconds = self.convert_to_seconds(self.time_entry)
 
-		while True:
-			time.sleep(self.time_in_seconds)
-			if self.link_type == "Local":
-				# open local link in corresponding operating system type
-				self.all_os_open(self.link_entry)
-			elif self.link_type == "External":
-				webbrowser.open(self.link_entry, 2)
+		self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
+		self.thread.start()
+
+	def start_thread(self):
+		if self.link_type == "Local":
+			# open local link in corresponding operating system type
+			self.all_os_open(self.link_entry)
+		elif self.link_type == "External":
+			webbrowser.open(self.link_entry, 2)
+		
+		self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
+		self.thread.start()
 
 	# helper for start_timer()
 	def convert_to_seconds(self, time):
@@ -160,7 +166,12 @@ class Window(QtWidgets.QMainWindow):
 			subprocess.call(('xdg-open', link))
 
 	def stop_timer(self):
-		pass
+		# hide start_btn and show stop_btn
+		self.stop_btn.hide()
+		self.start_btn.show()
+		self.thread.cancel()
+
+	#_______________________________________END______________________________________
 
 def main():
 	app = QtWidgets.QApplication(sys.argv)
