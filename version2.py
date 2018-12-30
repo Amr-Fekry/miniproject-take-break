@@ -128,31 +128,51 @@ class Window(QtWidgets.QMainWindow):
 		self.time_unit = text
 
 	def start_timer(self):
-		# show status bar with the start time
-		self.status.show()
-		self.status.showMessage("Started at " + time.ctime()[11:19])
-		# hide start_btn and show stop_btn
-		self.start_btn.hide()
-		self.stop_btn.show()
 		# get the link entry
 		self.link_entry = self.entry1.text()
 		# get the time entry
-		self.time_entry = int(self.entry2.text())
-		# convert time entry to seconds if needed
-		self.time_in_seconds = self.convert_to_seconds(self.time_entry)
+		self.time_entry = self.entry2.text()
+		# check if entries are valid
+		if self.valid_inputs():
+			# show status bar with the start time
+			self.status.show()
+			self.status.showMessage("Started at " + time.ctime()[11:19])
+			# hide start_btn and show stop_btn
+			self.start_btn.hide()
+			self.stop_btn.show()
+			# convert time entry to seconds if needed
+			self.time_in_seconds = self.convert_to_seconds(int(self.time_entry))
+			# start a timer in a new thread
+			self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
+			self.thread.start()
 
-		self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
-		self.thread.start()
-
-	def start_thread(self):
+	# helper for start_timer()
+	def valid_inputs(self):
+		# link type selected
+		try: self.link_type
+		except:
+			QtWidgets.QMessageBox.warning(self, "Warning", "No alert type selected!")
+			return False
+		# link is valid
 		if self.link_type == "Local":
-			# open local link in corresponding operating system type
-			self.all_os_open(self.link_entry)
+			if not os.path.exists(self.link_entry):
+				QtWidgets.QMessageBox.warning(self, "Warning", "Path to local file is not valid!")
+				return False
 		elif self.link_type == "External":
-			webbrowser.open(self.link_entry, 2)
-		
-		self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
-		self.thread.start()
+			if "http" not in self.link_entry and "www." not in self.link_entry:
+				QtWidgets.QMessageBox.warning(self, "Warning", "URL is not valid!")
+				return False
+		# time unit selected
+		try: self.time_unit
+		except:
+			QtWidgets.QMessageBox.warning(self, "Warning", "No time unit selected!")
+			return False
+		# integer value for time
+		try: int(self.time_entry)
+		except:	
+			QtWidgets.QMessageBox.warning(self, "Warning", "Entry in duration field must be an integer!")
+			return False
+		return True			
 
 	# helper for start_timer()
 	def convert_to_seconds(self, time):
@@ -163,7 +183,18 @@ class Window(QtWidgets.QMainWindow):
 		elif self.time_unit == "Seconds":
 			return time
 
-	# helper for start_timer()
+	# called when thread is activated
+	def start_thread(self):
+		if self.link_type == "Local":
+			# open local link in corresponding operating system type
+			self.all_os_open(self.link_entry)
+		elif self.link_type == "External":
+			webbrowser.open(self.link_entry, 2)
+		
+		self.thread = threading.Timer(self.time_in_seconds, self.start_thread)
+		self.thread.start()
+
+	# helper for start_thread()
 	def all_os_open(self, link):
 		# https://stackoverflow.com/questions/434597/open-document-with-default-application-in-python
 		if sys.platform.startswith('darwin'):
