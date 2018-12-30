@@ -128,6 +128,9 @@ class Window(QtWidgets.QMainWindow):
 		self.time_unit = text
 
 	def start_timer(self):
+		# show status bar with the start time
+		self.status.show()
+		self.status.showMessage("Started at " + time.ctime()[11:19])
 		# hide start_btn and show stop_btn
 		self.start_btn.hide()
 		self.stop_btn.show()
@@ -171,6 +174,9 @@ class Window(QtWidgets.QMainWindow):
 			subprocess.call(('xdg-open', link))
 
 	def stop_timer(self):
+		# add stop time to status bar
+		start_time = self.status.currentMessage()
+		self.status.showMessage(start_time + " | Stopped at " + time.ctime()[11:19])
 		# hide start_btn and show stop_btn
 		self.stop_btn.hide()
 		self.start_btn.show()
