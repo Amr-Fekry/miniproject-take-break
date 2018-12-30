@@ -10,6 +10,9 @@ class Window(QtWidgets.QMainWindow):
 		self.setGeometry(450, 200, 600, 400)
 		self.setWindowTitle("Take a break")
 		self.setWindowIcon(QtGui.QIcon("logo.png"))
+		# add a hidden status bar with a reference
+		self.status = self.statusBar()
+		self.status.hide()
 
 		self.initUI()
 
@@ -45,7 +48,7 @@ class Window(QtWidgets.QMainWindow):
 		self.gb.setLayout(self.gb_layout)
 		# C) entry1
 		self.entry1 = QtWidgets.QLineEdit()
-		self.entry1.setMinimumSize(300, 30) 
+		self.entry1.setMinimumSize(300, 30)
 		self.entry1.setStyleSheet("QLineEdit {background-color: white}")
 		# D) alert_choice
 		self.alert_choice = QtWidgets.QComboBox(self)
