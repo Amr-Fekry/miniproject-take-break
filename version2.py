@@ -48,6 +48,7 @@ class Window(QtWidgets.QMainWindow):
 		self.gb.setLayout(self.gb_layout)
 		# C) entry1
 		self.entry1 = QtWidgets.QLineEdit()
+		self.entry1.setPlaceholderText("Select link type first ->")
 		self.entry1.setMinimumSize(300, 30)
 		self.entry1.setStyleSheet("QLineEdit {background-color: white}")
 		# D) alert_choice
@@ -79,6 +80,7 @@ class Window(QtWidgets.QMainWindow):
 		self.gb2.setLayout(self.gb2_layout)
 		# G) entry2
 		self.entry2 = QtWidgets.QLineEdit()
+		self.entry2.setPlaceholderText("Add a number here then select time unit ->")
 		self.entry2.setMinimumSize(300, 30) 
 		self.entry2.setStyleSheet("QLineEdit {background-color: white}")
 		# H) alert_choice
